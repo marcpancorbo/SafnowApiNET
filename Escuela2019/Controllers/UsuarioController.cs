@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Escuela2019.Model;
+using Escuela2019.Services;
 
 namespace Escuela2019.Controllers
 {
@@ -13,39 +14,33 @@ namespace Escuela2019.Controllers
     [Route("api/[controller]")]
     public class UsuarioController : ControllerBase
     {
-        private readonly MyContext _context;
-
-        public UsuarioController(MyContext context)
+        private readonly IEscuela2019 _manager;
+        public UsuarioController(IEscuela2019 manager)
         {
-            _context = context;
+            _manager = manager;
         }
 
         [HttpGet]
-        public async Task<List<Usuario>> GetUsuario()
+        public async Task<ActionResult<List<Usuario>>> GetUsuario()
         {
-            return await _context.Usuarios.ToListAsync();
+            return await _manager.GetUsuario();
         }
 
         [HttpPost]
         public async Task<ActionResult<Usuario>> StoreUsuario(Usuario usuario)
         {
-            Alerta alerta = new Alerta
-            {
-                Name = "Alerta1"
-            };
-            usuario.Alertas.Add(alerta);
-            _context.Usuarios.Add(usuario);
-            await _context.SaveChangesAsync();
+            await _manager.StoreUsuario(usuario);
             return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Id }, usuario);
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<Usuario>> GetUsuario(int id)
         {
-            Usuario usuario = await _context.Usuarios.FindAsync(id);
+            ActionResult<Usuario> usuario = await _manager.GetUsuario(id);
             if (usuario == null)
             {
                 return NotFound();
             }
+
             return usuario;
         }
         [HttpPut("{id}")]
@@ -55,10 +50,9 @@ namespace Escuela2019.Controllers
             {
                 return BadRequest();
             }
-            _context.Entry(usuario).State = EntityState.Modified;
             try
             {
-                await _context.SaveChangesAsync();
+                await _manager.UpdateUsuario(usuario);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -71,9 +65,7 @@ namespace Escuela2019.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Usuario>> DeleteUsuario(int id)
         {
-            ActionResult<Usuario> usuario = await GetUsuario(id);
-            _context.Usuarios.Remove(usuario.Value);
-            await _context.SaveChangesAsync();
+          await _manager.DeleteUsuario(id);
             return StatusCode(200);
         }
 
@@ -83,8 +75,7 @@ namespace Escuela2019.Controllers
         {
             if (phoneNumber == null)
                 return BadRequest();
-            Usuario usuario =  await _context.Usuarios.Where(u => u.PhoneNumber == phoneNumber).Include(u => u.Alertas
-             ).FirstOrDefaultAsync();
+            ActionResult<Usuario> usuario = await _manager.GetUsuarioByPhoneNumber(phoneNumber);
             if (usuario == null)
                 return NotFound();
             return usuario;

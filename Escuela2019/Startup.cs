@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Escuela2019.Model;
+using Escuela2019.Services;
 
 namespace Escuela2019
 {
@@ -28,10 +29,10 @@ namespace Escuela2019
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MyContext>();
-
+            services.AddTransient<IEscuela2019,Services.Escuela2019>();
             services.AddControllers().AddNewtonsoftJson(options =>
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-       );
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

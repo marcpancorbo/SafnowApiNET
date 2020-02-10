@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Escuela2019.Model;
+using Escuela2019.Services;
 
 namespace Escuela2019.Controllers
 {
@@ -13,21 +14,20 @@ namespace Escuela2019.Controllers
     [Route("api/[controller]")]
     public class AlertaController : ControllerBase
     {
-        private readonly MyContext _context;
+        private readonly IEscuela2019 _manager;
 
-        public AlertaController(MyContext context)
+        public AlertaController(IEscuela2019 manager)
         {
-            _context = context;
+            _manager = manager;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Alerta>>> GetAlerta() => await _context.Alertas.ToListAsync();
+        public async Task<ActionResult<List<Alerta>>> GetAlerta() =>await _manager.GetAlerta();
         
         [HttpPost]
         public async Task<ActionResult<Alerta>> StoreAlerta(Alerta alerta)
         {
-            _context.Alertas.Add(alerta);
-            await _context.SaveChangesAsync();
+            await _manager.StoreAlerta(alerta);
             return CreatedAtAction(nameof(GetAlerta), new {id = alerta.Id}, alerta);
         }
         
