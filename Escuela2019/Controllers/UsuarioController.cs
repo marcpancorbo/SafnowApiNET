@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Escuela2019.Model;
 using Escuela2019.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Escuela2019.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class UsuarioController : ControllerBase
     {
         private readonly IEscuela2019 _manager;
@@ -27,6 +29,7 @@ namespace Escuela2019.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult<Usuario>> StoreUsuario(Usuario usuario)
         {
             await _manager.StoreUsuario(usuario);

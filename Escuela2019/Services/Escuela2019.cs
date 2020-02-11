@@ -35,8 +35,7 @@ namespace Escuela2019.Services
 
         public async Task<ActionResult<Usuario>> GetUsuario(int id)
         {
-            Usuario usuario = await _context.Usuarios.FindAsync(id);
-            return usuario;
+            return await _context.Usuarios.FindAsync(id);
         }
 
         public async Task UpdateUsuario(Usuario usuario)

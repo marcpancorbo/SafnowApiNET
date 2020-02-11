@@ -7,11 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Escuela2019.Model;
 using Escuela2019.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Escuela2019.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class AlertaController : ControllerBase
     {
         private readonly IEscuela2019 _manager;
