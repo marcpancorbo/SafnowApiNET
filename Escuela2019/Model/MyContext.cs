@@ -13,6 +13,10 @@ namespace Escuela2019.Model
             optionsBuilder.UseMySql("server=localhost;database=SafnowNET; user=safnow;password=safnow;");
         }
 
-     
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Usuario>().HasIndex(u => u.PhoneNumber).IsUnique();
+            base.OnModelCreating(modelBuilder); 
+        }
     }
 }

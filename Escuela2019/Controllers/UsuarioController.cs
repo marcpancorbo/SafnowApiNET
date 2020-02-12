@@ -28,8 +28,15 @@ namespace Escuela2019.Controllers
         {
             usuario.Identifier = await _manager.GetNextIdentifier();
             usuario.VerificationCode =  _manager.GetCode().Result;
-            await _manager.StoreUsuario(usuario);
-            return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Identifier}, usuario);
+            try
+            {
+                await _manager.StoreUsuario(usuario);
+                return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Identifier}, usuario);
+            }
+            catch (DbUpdateException e)
+            {
+                return Conflict();
+            }
         }
         
         [HttpGet]

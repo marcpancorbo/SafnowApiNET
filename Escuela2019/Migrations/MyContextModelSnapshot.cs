@@ -81,6 +81,9 @@ namespace Escuela2019.Migrations
 
                     b.HasKey("Identifier");
 
+                    b.HasIndex("PhoneNumber")
+                        .IsUnique();
+
                     b.ToTable("Usuarios");
                 });
 
@@ -91,7 +94,8 @@ namespace Escuela2019.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .HasColumnType("varchar(5) CHARACTER SET utf8mb4")
+                        .HasMaxLength(5);
 
                     b.HasKey("Id");
 

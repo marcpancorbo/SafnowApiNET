@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Escuela2019.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20200212151019_Migracion")]
+    [Migration("20200212163522_Migracion")]
     partial class Migracion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,7 +83,25 @@ namespace Escuela2019.Migrations
 
                     b.HasKey("Identifier");
 
+                    b.HasIndex("PhoneNumber")
+                        .IsUnique();
+
                     b.ToTable("Usuarios");
+                });
+
+            modelBuilder.Entity("Escuela2019.Model.VerificationCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("varchar(5) CHARACTER SET utf8mb4")
+                        .HasMaxLength(5);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Codes");
                 });
 
             modelBuilder.Entity("Escuela2019.Model.Alerta", b =>

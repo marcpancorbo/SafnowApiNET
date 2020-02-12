@@ -8,6 +8,19 @@ namespace Escuela2019.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Codes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Code = table.Column<string>(maxLength: 5, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Codes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Usuarios",
                 columns: table => new
                 {
@@ -73,10 +86,19 @@ namespace Escuela2019.Migrations
                 name: "IX_Ubications_AlertId",
                 table: "Ubications",
                 column: "AlertId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_PhoneNumber",
+                table: "Usuarios",
+                column: "PhoneNumber",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Codes");
+
             migrationBuilder.DropTable(
                 name: "Ubications");
 
