@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Escuela2019.Model;
 using Escuela2019.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Escuela2019
@@ -32,7 +33,7 @@ namespace Escuela2019
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MyContext>();
-            services.AddTransient<IEscuela2019, Services.Escuela2019>();
+            services.AddTransient<IManager, Manager>();
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );

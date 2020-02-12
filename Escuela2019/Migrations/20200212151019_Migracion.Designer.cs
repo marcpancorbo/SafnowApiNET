@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Escuela2019.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20200208155110_migracion")]
-    partial class migracion
+    [Migration("20200212151019_Migracion")]
+    partial class Migracion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,21 +31,42 @@ namespace Escuela2019.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int?>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("UsuarioIdentifier")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("UsuarioIdentifier");
 
                     b.ToTable("Alertas");
                 });
 
-            modelBuilder.Entity("Escuela2019.Model.Usuario", b =>
+            modelBuilder.Entity("Escuela2019.Model.Ubication", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<int?>("AlertId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Altitude")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Latitude")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AlertId");
+
+                    b.ToTable("Ubications");
+                });
+
+            modelBuilder.Entity("Escuela2019.Model.Usuario", b =>
+                {
+                    b.Property<string>("Identifier")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<string>("Name")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -54,7 +75,13 @@ namespace Escuela2019.Migrations
                         .HasColumnType("varchar(9) CHARACTER SET utf8mb4")
                         .HasMaxLength(9);
 
-                    b.HasKey("Id");
+                    b.Property<bool>("Verificated")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("VerificationCode")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("Identifier");
 
                     b.ToTable("Usuarios");
                 });
@@ -63,7 +90,14 @@ namespace Escuela2019.Migrations
                 {
                     b.HasOne("Escuela2019.Model.Usuario", "Usuario")
                         .WithMany("Alertas")
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("UsuarioIdentifier");
+                });
+
+            modelBuilder.Entity("Escuela2019.Model.Ubication", b =>
+                {
+                    b.HasOne("Escuela2019.Model.Alerta", "Alert")
+                        .WithMany("Ubications")
+                        .HasForeignKey("AlertId");
                 });
 #pragma warning restore 612, 618
         }

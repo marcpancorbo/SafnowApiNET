@@ -6,13 +6,14 @@ using Microsoft.AspNetCore.Mvc;
  
 namespace Escuela2019.Model
 {
-    public class Usuario
+    public class Usuario : Nameable
     {
         public string Name { get; set; }
         [MaxLength(9)]
+        [Index(IsUnique = true)]
         public string PhoneNumber { get; set; }
         public List<Alerta> Alertas { get; set; } = new List<Alerta>();
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { set; get; } 
+        public bool Verificated { set; get; }
+        public string VerificationCode { set; get; }
     }
 }

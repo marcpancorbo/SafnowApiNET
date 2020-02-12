@@ -1,5 +1,6 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,11 +18,11 @@ namespace Escuela2019.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        private readonly IEscuela2019 _manager;
+        private readonly IManager _manager;
         
         // TRAEMOS EL OBJETO DE CONFIGURACIÓN (appsettings.json)
         // MEDIANTE INYECCIÓN DE DEPENDENCIAS.
-        public LoginController(IConfiguration configuration, IEscuela2019 manager)
+        public LoginController(IConfiguration configuration, IManager manager)
         {
             this._configuration = configuration;
             this._manager = manager;
@@ -32,10 +33,10 @@ namespace Escuela2019.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(Usuario usuario)
         {
-            var _userInfo = await AutenticarUsuarioAsync(usuario.PhoneNumber, usuario.Name);
-            if (_userInfo != null)
+            var _userInfo = AutenticarUsuarioAsync(usuario.PhoneNumber, usuario.VerificationCode).Result;
+            if (_userInfo.Value != null)
             {
-                return Ok(new { token = GenerarTokenJWT(_userInfo) });
+                return Ok(new { token =  GenerarTokenJWT(_userInfo) });
             }
             else
             {
@@ -44,7 +45,7 @@ namespace Escuela2019.Controllers
         }
 
         // COMPROBAMOS SI EL USUARIO EXISTE EN LA BASE DE DATOS 
-        private async Task<Usuario> AutenticarUsuarioAsync(string phoneNumber, string code)
+        private async Task<ActionResult<Usuario>> AutenticarUsuarioAsync(string phoneNumber, string code)
         {
             // AQUÍ LA LÓGICA DE AUTENTICACIÓN //
 
@@ -52,11 +53,22 @@ namespace Escuela2019.Controllers
             // Retornamos un objeto del tipo UsuarioInfo, con toda
             // la información del usuario necesaria para el Token.
             ActionResult<Usuario> result = await _manager.GetUsuarioByPhoneNumber(phoneNumber);
-            return result.Value;
+            if (result.Value != null)
+            {
+                if (result.Value.VerificationCode.Equals(code))
+                {
+                    result.Value.Verificated = true;
+                    await _manager.UpdateUsuario(result.Value);
+                    return result.Value; 
+                }
+                    
+            }
+
+            return Unauthorized();
         }
 
         // GENERAMOS EL TOKEN CON LA INFORMACIÓN DEL USUARIO
-        private string GenerarTokenJWT(Usuario usuario)
+        private string GenerarTokenJWT(ActionResult<Usuario> usuario)
         {
             // CREAMOS EL HEADER //
             var _symmetricSecurityKey = new SymmetricSecurityKey(
@@ -70,9 +82,9 @@ namespace Escuela2019.Controllers
             // CREAMOS LOS CLAIMS //
             var _Claims = new[] {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.NameId, usuario.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Nbf, usuario.PhoneNumber), 
-                new Claim("nombre", usuario.Name),
+                new Claim(JwtRegisteredClaimNames.NameId, usuario.Value.Identifier.ToString()),
+                new Claim(JwtRegisteredClaimNames.Nbf, usuario.Value.PhoneNumber), 
+                new Claim("nombre", usuario.Value.Name),
             };
 
             // CREAMOS EL PAYLOAD //

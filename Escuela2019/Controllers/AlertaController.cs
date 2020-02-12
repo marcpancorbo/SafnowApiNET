@@ -16,9 +16,9 @@ namespace Escuela2019.Controllers
     [Authorize]
     public class AlertaController : ControllerBase
     {
-        private readonly IEscuela2019 _manager;
+        private readonly IManager _manager;
 
-        public AlertaController(IEscuela2019 manager)
+        public AlertaController(IManager manager)
         {
             _manager = manager;
         }

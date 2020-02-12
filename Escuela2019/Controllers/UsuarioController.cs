@@ -14,42 +14,46 @@ namespace Escuela2019.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize]
-    public class UsuarioController : ControllerBase
+    public class UsuarioController : Controller
     {
-        private readonly IEscuela2019 _manager;
-        public UsuarioController(IEscuela2019 manager)
+        private readonly IManager _manager;
+        public UsuarioController(IManager manager)
         {
             _manager = manager;
         }
-
-        [HttpGet]
-        public async Task<ActionResult<List<Usuario>>> GetUsuario()
-        {
-            return await _manager.GetUsuario();
-        }
-
+        
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult<Usuario>> StoreUsuario(Usuario usuario)
         {
+            usuario.Identifier = await _manager.GetNextIdentifier();
+            usuario.VerificationCode =  _manager.GetCode().Result;
             await _manager.StoreUsuario(usuario);
-            return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Id }, usuario);
+            return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Identifier}, usuario);
         }
+        
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuario()
+        {
+            return await _manager.GetUsuario();
+        }
+        
         [HttpGet("{id}")]
-        public async Task<ActionResult<Usuario>> GetUsuario(int id)
+        public async Task<ActionResult<Usuario>> GetUsuario(String id)
         {
             ActionResult<Usuario> usuario = await _manager.GetUsuario(id);
-            if (usuario == null)
+            if (usuario.Value == null)
             {
                 return NotFound();
             }
 
             return usuario;
         }
+
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUsuario(int id, Usuario usuario)
+        public async Task<IActionResult> UpdateUsuario(string id, Usuario usuario)
         {
-            if (id != usuario.Id)
+            if (!id.Equals(usuario.Identifier))
             {
                 return BadRequest();
             }
@@ -62,11 +66,11 @@ namespace Escuela2019.Controllers
                 return NotFound();
 
             }
-            return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Id }, usuario);
+            return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Identifier }, usuario);
 
         }
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Usuario>> DeleteUsuario(int id)
+        public async Task<ActionResult<Usuario>> DeleteUsuario(string id)
         {
           await _manager.DeleteUsuario(id);
             return StatusCode(200);
