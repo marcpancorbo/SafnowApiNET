@@ -34,6 +34,11 @@ namespace Escuela2019
         {
             services.AddDbContext<MyContext>();
             services.AddTransient<IManager, Manager>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("MyCorsPolicy",
+                    builder => { builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin(); });
+            });
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
@@ -69,7 +74,7 @@ namespace Escuela2019
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseCors("MyCorsPolicy");
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }

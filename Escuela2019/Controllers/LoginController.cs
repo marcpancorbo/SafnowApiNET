@@ -13,7 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Escuela2019.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("rest/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
     {

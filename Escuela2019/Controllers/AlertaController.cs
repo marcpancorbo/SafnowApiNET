@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Escuela2019.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("rest/[controller]")]
     [Authorize]
     public class AlertaController : ControllerBase
     {

@@ -15,5 +15,11 @@ namespace Escuela2019.Model
         public List<Alerta> Alertas { get; set; } = new List<Alerta>();
         public bool Verificated { set; get; }
         public string VerificationCode { set; get; }
+
+        public void Copy(Usuario usuario)
+        {
+            Name = usuario.Name;
+            PhoneNumber = usuario.PhoneNumber;
+        }
     }
 }

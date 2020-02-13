@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Escuela2019.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("rest/[controller]")]
     [Authorize]
     public class UsuarioController : Controller
     {
@@ -26,17 +26,25 @@ namespace Escuela2019.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<Usuario>> StoreUsuario(Usuario usuario)
         {
-            usuario.Identifier = await _manager.GetNextIdentifier();
-            usuario.VerificationCode =  _manager.GetCode().Result;
-            try
+            if (usuario.Identifier != null)
             {
+                Usuario usuario1 = GetUsuario(usuario.Identifier).Result.Value;
+                if (usuario1.PhoneNumber != usuario.PhoneNumber)
+                    return BadRequest();
+                if (usuario1 != null)
+                {
+                    usuario1.Copy(usuario);
+                    usuario = usuario1;
+                    await _manager.UpdateUsuario(usuario);
+                }
+            }
+            else
+            {
+                usuario.Identifier = await _manager.GetNextIdentifier();
+                usuario.VerificationCode =  _manager.GetCode().Result;
                 await _manager.StoreUsuario(usuario);
-                return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Identifier}, usuario);
             }
-            catch (DbUpdateException e)
-            {
-                return Conflict();
-            }
+            return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Identifier}, usuario);
         }
         
         [HttpGet]
