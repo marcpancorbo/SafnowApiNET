@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 namespace Escuela2019.Model
 {
@@ -16,7 +17,12 @@ namespace Escuela2019.Model
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Usuario>().HasIndex(u => u.PhoneNumber).IsUnique();
+            modelBuilder.Entity<Usuario>().HasMany(u => u.Alertas).WithOne(a => a.Usuario)
+                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Alerta>().HasMany(a => a.Ubications).WithOne(u => u.Alert)
+                .OnDelete(DeleteBehavior.Cascade);
             base.OnModelCreating(modelBuilder); 
+            
         }
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Escuela2019.Controllers
 {
     [ApiController]
-    [Route("rest/[controller]")]
+    [Route("rest/")]
     [Authorize]
     public class UsuarioController : Controller
     {
@@ -24,6 +24,7 @@ namespace Escuela2019.Controllers
         
         [HttpPost]
         [AllowAnonymous]
+        [Route("[controller]")]
         public async Task<ActionResult<Usuario>> StoreUsuario(Usuario usuario)
         {
             if (usuario.Identifier != null)
@@ -48,12 +49,14 @@ namespace Escuela2019.Controllers
         }
         
         [HttpGet]
+        [Route("[controller]")]
         public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuario()
         {
             return await _manager.GetUsuario();
         }
         
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("[controller]/{id}")]
         public async Task<ActionResult<Usuario>> GetUsuario(String id)
         {
             ActionResult<Usuario> usuario = await _manager.GetUsuario(id);
@@ -65,7 +68,8 @@ namespace Escuela2019.Controllers
             return usuario;
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
+        [Route("[controller]/{id}")]
         public async Task<IActionResult> UpdateUsuario(string id, Usuario usuario)
         {
             if (!id.Equals(usuario.Identifier))
@@ -84,7 +88,8 @@ namespace Escuela2019.Controllers
             return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Identifier }, usuario);
 
         }
-        [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("[controller]/{id}")]
         public async Task<ActionResult<Usuario>> DeleteUsuario(string id)
         {
           await _manager.DeleteUsuario(id);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -81,7 +82,7 @@ namespace Escuela2019.Services
             if (PATTERN.IsMatch(identifier))
             {
                 string numbers = PATTERN.Match(identifier).Groups[2].Value;
-                int num = Int32.Parse(numbers)+1;
+                int num = Int32.Parse(numbers) + 1;
                 string pattern = num.ToString();
                 string adg=  "User" + Regex.Replace(pattern, "[0-9]+", match => match.Value.PadLeft(5, '0'));
                 return adg;
@@ -91,7 +92,9 @@ namespace Escuela2019.Services
 
         public async Task<string> GetCode()
         {
-            ActionResult<VerificationCode> code = await _context.Codes.OrderBy(x => Guid.NewGuid()).Take(1).FirstOrDefaultAsync();
+            var qry = await _context.Codes.FromSqlRaw("select Code from safnowNET.Codes").CountAsync();
+            int index = new Random().Next(qry);
+            ActionResult<VerificationCode> code = await _context.Codes.Skip(index).FirstOrDefaultAsync();
             return code.Value.Code;
         }
     }
