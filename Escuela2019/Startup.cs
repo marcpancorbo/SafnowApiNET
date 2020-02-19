@@ -14,13 +14,17 @@ using Microsoft.Extensions.Logging;
 using Escuela2019.Model;
 using Escuela2019.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 namespace Escuela2019
 {
     public class Startup
     {
+        
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,13 +36,13 @@ namespace Escuela2019
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<MyContext>();
-            services.AddTransient<IManager, Manager>();
             services.AddCors(options =>
             {
                 options.AddPolicy("MyCorsPolicy",
                     builder => { builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin(); });
             });
+            services.AddDbContext<MyContext>();
+            services.AddTransient<IManager, Manager>();
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
@@ -63,6 +67,7 @@ namespace Escuela2019
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors("MyCorsPolicy");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -74,7 +79,6 @@ namespace Escuela2019
             app.UseRouting();
 
             app.UseAuthorization();
-            app.UseCors("MyCorsPolicy");
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
