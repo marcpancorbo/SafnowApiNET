@@ -68,6 +68,7 @@ namespace Escuela2019
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseCors("MyCorsPolicy");
+            app.UseMiddleware<CorsMiddleware>();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

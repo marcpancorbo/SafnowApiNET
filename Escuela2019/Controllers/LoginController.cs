@@ -36,10 +36,7 @@ namespace Escuela2019.Controllers
             var _userInfo = AutenticarUsuarioAsync(usuario.PhoneNumber, usuario.VerificationCode).Result;
             if (_userInfo.Value != null)
             {
-
-                Response.Headers.Add("Access-Control-Allow-Origin", "*");
-                Response.Headers.Add("Access-Control-Allow-Methods", "*");
-                Response.Headers.Add("Access-Control-Allow-Headers", "*");
+                
                 return Ok(new { token =  GenerarTokenJWT(_userInfo) });
                 
             }
