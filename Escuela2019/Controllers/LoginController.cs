@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace Escuela2019.Controllers
 {
     [Route("rest/[controller]")]
+    [Produces("application/json")]
     [ApiController]
     public class LoginController : ControllerBase
     {

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Escuela2019.Controllers
 {
     [ApiController]
+    [Produces("application/json")]
     [Route("rest/")]
     [Authorize]
     public class UsuarioController : Controller
