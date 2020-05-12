@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Escuela2019.Model
+namespace Safnow.Model
 {
     public class Nameable
     {

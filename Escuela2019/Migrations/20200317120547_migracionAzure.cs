@@ -1,0 +1,17 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+namespace Escuela2019.Migrations
+{
+    public partial class migracionAzure : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+
+        }
+    }
+}

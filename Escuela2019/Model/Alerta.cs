@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Escuela2019.Model
+namespace Safnow.Model
 {
     public class Alerta : Identifiable
     {

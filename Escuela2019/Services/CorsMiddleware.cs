@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace Escuela2019.Services
+namespace Safnow.Services
 {
     public class CorsMiddleware
     {

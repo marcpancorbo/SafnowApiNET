@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Mvc;
- 
-namespace Escuela2019.Model
+
+namespace Safnow.Model
 {
     public class Usuario : Nameable
     {

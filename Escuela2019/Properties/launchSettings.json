@@ -19,8 +19,8 @@
     },
     "Escuela2019": {
       "commandName": "Project",
-      "launchBrowser": false,
-      "launchUrl": "api/Usuario",
+      "launchBrowser": true,
+      "launchUrl": "",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

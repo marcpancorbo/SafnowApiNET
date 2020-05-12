@@ -1,6 +1,4 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Escuela2019.Model
+namespace Safnow.Model
 {
     public class Identifiable
     {

@@ -5,7 +5,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="EntityFramework" Version="6.4.0" />
       <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.3" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.1" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
@@ -18,11 +17,12 @@
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1" />
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
       <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.1" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
       <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.1" />
       <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1" />
       <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0" />
+      <PackageReference Include="EntityFramework" Version="6.4.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -31,4 +31,16 @@
     </ItemGroup>
 
 
+    <ItemGroup>
+      <Compile Remove="Migrations\20200212163522_Migracion.Designer.cs" />
+      <Compile Remove="Migrations\20200317122822_migracionAzure3.Designer.cs" />
+      <Compile Remove="Migrations\20200317122822_migracionAzure3.cs" />
+      <Compile Remove="Migrations\20200317120547_migracionAzure.cs" />
+      <Compile Remove="Migrations\20200317121239_migracionAzure2.Designer.cs" />
+      <Compile Remove="Migrations\20200219095734_InitialCreate.Designer.cs" />
+      <Compile Remove="Migrations\20200216101020_InitialCreate4.cs" />
+      <Compile Remove="Migrations\20200317121239_migracionAzure2.cs" />
+      <Compile Remove="Migrations\20200317120547_migracionAzure.Designer.cs" />
+      <Compile Remove="Migrations\20200219095734_InitialCreate.cs" />
+    </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
-namespace Escuela2019.Model
+
+namespace Safnow.Model
 {
     public class MyContext : DbContext
     {
@@ -11,7 +11,7 @@ namespace Escuela2019.Model
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySql("server=localhost;database=SafnowNET; user=safnow;password=safnow;");
+            optionsBuilder.UseSqlServer("Server=tcp:safnow.database.windows.net,1433;database=safnow; User ID=safnow;password=stucomDAM2T;Encrypt=true;Connection Timeout=30;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

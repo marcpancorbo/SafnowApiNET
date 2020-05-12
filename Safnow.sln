@@ -1,6 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Escuela2019", "Escuela2019\Escuela2019.csproj", "{79946B58-45DE-4049-ABD3-1360796C0FA2}"
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Safnow", "Escuela2019\Safnow.csproj", "{79946B58-45DE-4049-ABD3-1360796C0FA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

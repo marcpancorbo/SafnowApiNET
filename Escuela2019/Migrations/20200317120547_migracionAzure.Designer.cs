@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Escuela2019.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20200216101020_InitialCreate4")]
-    partial class InitialCreate4
+    [Migration("20200317120547_migracionAzure")]
+    partial class migracionAzure
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

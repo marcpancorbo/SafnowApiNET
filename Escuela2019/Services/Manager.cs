@@ -1,16 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Escuela2019.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileSystemGlobbing;
-using Microsoft.VisualBasic;
+using Safnow.Model;
 
-namespace Escuela2019.Services
+namespace Safnow.Services
 {
     public class Manager : IManager
     {

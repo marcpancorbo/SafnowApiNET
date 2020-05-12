@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Escuela2019.Migrations
 {
-    public partial class Migracion : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +11,7 @@ namespace Escuela2019.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Code = table.Column<string>(maxLength: 5, nullable: true)
                 },
                 constraints: table =>
@@ -40,7 +39,7 @@ namespace Escuela2019.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(nullable: true),
                     Direction = table.Column<string>(nullable: true),
                     UsuarioIdentifier = table.Column<string>(nullable: true)
@@ -53,7 +52,7 @@ namespace Escuela2019.Migrations
                         column: x => x.UsuarioIdentifier,
                         principalTable: "Usuarios",
                         principalColumn: "Identifier",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -61,7 +60,7 @@ namespace Escuela2019.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Altitude = table.Column<string>(nullable: true),
                     Latitude = table.Column<string>(nullable: true),
                     AlertId = table.Column<int>(nullable: true)
@@ -74,7 +73,7 @@ namespace Escuela2019.Migrations
                         column: x => x.AlertId,
                         principalTable: "Alertas",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -91,7 +90,8 @@ namespace Escuela2019.Migrations
                 name: "IX_Usuarios_PhoneNumber",
                 table: "Usuarios",
                 column: "PhoneNumber",
-                unique: true);
+                unique: true,
+                filter: "[PhoneNumber] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

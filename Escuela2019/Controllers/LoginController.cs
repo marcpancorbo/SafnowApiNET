@@ -1,17 +1,16 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Escuela2019.Model;
-using Escuela2019.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Safnow.Model;
+using Safnow.Services;
 
-namespace Escuela2019.Controllers
+namespace Safnow.Controllers
 {
     [Route("rest/[controller]")]
     [Produces("application/json")]
