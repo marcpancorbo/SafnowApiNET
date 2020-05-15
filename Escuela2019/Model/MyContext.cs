@@ -11,7 +11,7 @@ namespace Safnow.Model
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=tcp:safnow.database.windows.net,1433;database=safnow; User ID=safnow;password=stucomDAM2T;Encrypt=true;Connection Timeout=30;");
+            optionsBuilder.UseMySql("Server=localhost;Database=safnownet;Uid=safnow;Pwd=safnow;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

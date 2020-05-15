@@ -25,11 +25,6 @@ namespace Safnow.Services
 
         public async Task<ActionResult<Usuario>> StoreUsuario(Usuario usuario)
         {
-            Alerta alerta = new Alerta
-            {
-                Name = "Prueba"
-            };
-            usuario.Alertas.Add(alerta);
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
             return usuario;
@@ -64,6 +59,7 @@ namespace Safnow.Services
 
         public async Task<ActionResult<Alerta>> StoreAlerta(Alerta alerta)
         {
+            alerta.Usuario = await _context.Usuarios.Where(u => u.PhoneNumber == alerta.Usuario.PhoneNumber).FirstOrDefaultAsync();
             _context.Alertas.Add(alerta);
             await _context.SaveChangesAsync();
             return alerta;
