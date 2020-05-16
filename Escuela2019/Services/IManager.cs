@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -19,5 +20,8 @@ namespace Safnow.Services
         Task<ActionResult<Alerta>> StoreAlerta(Alerta alerta);
         Task<string> GetNextIdentifier();
         Task<string> GetCode();
+        void SendMessage(Alerta alerta);
+        void SendVerificationCode(Usuario usuario);
+
     }
 }

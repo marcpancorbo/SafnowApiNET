@@ -19,8 +19,6 @@ namespace Safnow.Model
             modelBuilder.Entity<Usuario>().HasIndex(u => u.PhoneNumber).IsUnique();
             modelBuilder.Entity<Usuario>().HasMany(u => u.Alertas).WithOne(a => a.Usuario)
                 .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Alerta>().HasMany(a => a.Ubications).WithOne(u => u.Alert)
-                .OnDelete(DeleteBehavior.Cascade);
             base.OnModelCreating(modelBuilder); 
             
         }

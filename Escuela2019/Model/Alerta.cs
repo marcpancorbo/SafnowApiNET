@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,9 +9,9 @@ namespace Safnow.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { set; get; }
         public string Name { set; get; }
-        public string Direction { set; get; }
         public Usuario Usuario { set; get; }
-        public List<Ubication> Ubications { set; get; }
-     
+        public Ubication Ubication { set; get; }
+        [NotMapped]
+        public List<String> To { set; get; }
     }
 }

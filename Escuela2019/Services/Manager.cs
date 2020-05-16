@@ -1,11 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Runtime.Serialization.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Safnow.Model;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
+
 
 namespace Safnow.Services
 {
@@ -62,6 +69,7 @@ namespace Safnow.Services
             alerta.Usuario = await _context.Usuarios.Where(u => u.PhoneNumber == alerta.Usuario.PhoneNumber).FirstOrDefaultAsync();
             _context.Alertas.Add(alerta);
             await _context.SaveChangesAsync();
+            SendMessage(alerta);
             return alerta;
         }
 
@@ -77,7 +85,7 @@ namespace Safnow.Services
                 string numbers = PATTERN.Match(identifier).Groups[2].Value;
                 int num = Int32.Parse(numbers) + 1;
                 string pattern = num.ToString();
-                string adg=  "User" + Regex.Replace(pattern, "[0-9]+", match => match.Value.PadLeft(5, '0'));
+                string adg = "User" + Regex.Replace(pattern, "[0-9]+", match => match.Value.PadLeft(5, '0'));
                 return adg;
             }
             return null;
@@ -90,5 +98,34 @@ namespace Safnow.Services
             ActionResult<VerificationCode> code = await _context.Codes.Skip(index).FirstOrDefaultAsync();
             return code.Value.Code;
         }
+
+        public void SendMessage(Alerta alerta)
+        {
+            const string accountSid = "AC4f086e627dc9cdf23e0ebaeb8a119671";
+            const string authToken = "d482c47e827d310e62cc38dbe34fd8c7";
+            TwilioClient.Init(accountSid, authToken);
+            foreach( var phoneNumber in alerta.To)
+            {
+                var towho = new PhoneNumber("+34" + phoneNumber);
+                var message = MessageResource.Create(
+                    towho,
+                    from: new PhoneNumber("+12073863419"), //  From number, must be an SMS-enabled Twilio number ( This will send sms from ur "To" numbers ).  
+                    body: $"Tu contacto "+alerta.Usuario.Name+" con teléfono "+alerta.Usuario.PhoneNumber+" está en peligro! Puedes encontrar su ubicación mediante estos parámetros latitud: "+alerta.Ubication.Latitude+" longitud: "+alerta.Ubication.Altitude);
+            }
+            
+        }
+
+        public void SendVerificationCode(Usuario usuario)
+        {
+            const string accountSid = "AC4f086e627dc9cdf23e0ebaeb8a119671";
+            const string authToken = "d482c47e827d310e62cc38dbe34fd8c7";
+            TwilioClient.Init(accountSid, authToken);
+                var towho = new PhoneNumber("+34" + usuario.PhoneNumber);
+                var message = MessageResource.Create(
+                    towho,
+                    from: new PhoneNumber("+12073863419"), //  From number, must be an SMS-enabled Twilio number ( This will send sms from ur "To" numbers ).  
+                    body: $"Tu código de verificación es: "+usuario.VerificationCode);
+        }
     }
+
 }

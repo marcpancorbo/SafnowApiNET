@@ -26,24 +26,18 @@ namespace Safnow.Controllers
         [Route("[controller]")]
         public async Task<ActionResult<Usuario>> StoreUsuario(Usuario usuario)
         {
-            if (usuario.Identifier != null)
+            ActionResult<Usuario> usuario1 = await _manager.GetUsuarioByPhoneNumber(usuario.PhoneNumber);
+            if (usuario1 == null)
             {
-                Usuario usuario1 = GetUsuario(usuario.Identifier).Result.Value;
-                if (usuario1.PhoneNumber != usuario.PhoneNumber)
-                    return BadRequest();
-                if (usuario1 != null)
-                {
-                    usuario1.Copy(usuario);
-                    usuario = usuario1;
-                    await _manager.UpdateUsuario(usuario);
-                }
+                usuario.Identifier = await _manager.GetNextIdentifier();
+                usuario.VerificationCode = _manager.GetCode().Result;
+                await _manager.StoreUsuario(usuario);
             }
             else
             {
-                usuario.Identifier = await _manager.GetNextIdentifier();
-                usuario.VerificationCode =  _manager.GetCode().Result;
-                await _manager.StoreUsuario(usuario);
+                usuario.VerificationCode = _manager.GetCode().Result;
             }
+            _manager.SendVerificationCode(usuario);
             return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Identifier}, usuario);
         }
         
