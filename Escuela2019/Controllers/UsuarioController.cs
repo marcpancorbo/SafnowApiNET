@@ -27,7 +27,7 @@ namespace Safnow.Controllers
         public async Task<ActionResult<Usuario>> StoreUsuario(Usuario usuario)
         {
             ActionResult<Usuario> usuario1 = await _manager.GetUsuarioByPhoneNumber(usuario.PhoneNumber);
-            if (usuario1 == null)
+            if (usuario1.Value == null)
             {
                 usuario.Identifier = await _manager.GetNextIdentifier();
                 usuario.VerificationCode = _manager.GetCode().Result;
@@ -37,7 +37,7 @@ namespace Safnow.Controllers
             {
                 usuario.VerificationCode = _manager.GetCode().Result;
             }
-            _manager.SendVerificationCode(usuario);
+            //_manager.SendVerificationCode(usuario);
             return CreatedAtAction(nameof(GetUsuario), new { id = usuario.Identifier}, usuario);
         }
         

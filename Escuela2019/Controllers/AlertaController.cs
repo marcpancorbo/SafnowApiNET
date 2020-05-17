@@ -26,7 +26,7 @@ namespace Safnow.Controllers
         [HttpPost]
         public async Task<ActionResult<Alerta>> StoreAlerta(Alerta alerta)
         {
-            await _manager.StoreAlerta(alerta);
+           await _manager.StoreAlerta(alerta);
             return CreatedAtAction(nameof(GetAlerta), new {id = alerta.Id}, alerta);
         }
         

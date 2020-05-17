@@ -69,7 +69,7 @@ namespace Safnow.Services
             alerta.Usuario = await _context.Usuarios.Where(u => u.PhoneNumber == alerta.Usuario.PhoneNumber).FirstOrDefaultAsync();
             _context.Alertas.Add(alerta);
             await _context.SaveChangesAsync();
-            SendMessage(alerta);
+            //SendMessage(alerta);
             return alerta;
         }
 
